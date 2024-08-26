@@ -5,3 +5,4 @@ foreach ($array as $fruit) {
     echo $fruit . "<br>";
 }
 ?>
+<!-- //script to add 2 numbers -->
