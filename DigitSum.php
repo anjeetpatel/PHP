@@ -13,7 +13,7 @@
         <?php
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $number = $_POST['number'];
-            $sum = 0;
+            $sum = "0"  ;
             for ($i = 0; $i < strlen($number); $i++) {
                 $sum += $number[$i];
             }
