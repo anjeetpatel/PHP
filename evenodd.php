@@ -1,5 +1,4 @@
 <!-- even odd using if else in php -->
- <!-- do it by taking user inout in form -->
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,4 +20,4 @@
             }
         }
         ?>
-    </body>
+</body>
