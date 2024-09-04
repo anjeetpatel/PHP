@@ -3,42 +3,64 @@
  prompt the user to add a new item to the inventory.
   2. update item quantity
   -prompt the user to update the quantity of an existing items 
-  take input usinf form-->
+  take input usinf form
+   3. find total value of the inventory -->
 <?php
-// Start session to store inventory data
-session_start();
+// Initialize inventory array
+$inventory = [
+    'item1' => ['quantity' => 10, 'price' => 50],
+    'item2' => ['quantity' => 5, 'price' => 100],
+];
 
-// Initialize inventory if not already set
-if (!isset($_SESSION['inventory'])) {
-    $_SESSION['inventory'] = array(
-        "item1" => array("quantity" => 10, "price" => 50),
-        "item2" => array("quantity" => 5, "price" => 20)
-    );
+// Function to add a new item to the inventory
+function addItem(&$inventory, $itemName, $quantity, $price) {
+    if (!isset($inventory[$itemName])) {
+        $inventory[$itemName] = ['quantity' => $quantity, 'price' => $price];
+        echo "Item '$itemName' added successfully.<br>";
+    } else {
+        echo "Item '$itemName' already exists in the inventory.<br>";
+    }
 }
 
-// Handle form submissions
+// Function to update the quantity of an existing item
+function updateQuantity(&$inventory, $itemName, $quantity) {
+    if (isset($inventory[$itemName])) {
+        $inventory[$itemName]['quantity'] = $quantity;
+        echo "Quantity of '$itemName' updated successfully.<br>";
+    } else {
+        echo "Item '$itemName' does not exist in the inventory.<br>";
+    }
+}
+
+// Function to calculate the total value of the inventory
+function calculateTotalValue($inventory) {
+    $totalValue = 0;
+    foreach ($inventory as $item) {
+        $totalValue += $item['quantity'] * $item['price'];
+    }
+    return $totalValue;
+}
+
+// Handling form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['add'])) {
-        // Add new item
-        $itemName = $_POST['item_name'];
-        $quantity = $_POST['quantity'];
-        $price = $_POST['price'];
+    if (isset($_POST['action'])) {
+        $action = $_POST['action'];
+        $itemName = $_POST['item_name'] ?? '';
+        $quantity = $_POST['quantity'] ?? 0;
+        $price = $_POST['price'] ?? 0;
 
-        $_SESSION['inventory'][$itemName] = array("quantity" => $quantity, "price" => $price);
-        echo "<p>Item '$itemName' added successfully.</p>";
-    } elseif (isset($_POST['update'])) {
-        // Update existing item quantity
-        $itemName = $_POST['update_item_name'];
-        $newQuantity = $_POST['new_quantity'];
-
-        if (isset($_SESSION['inventory'][$itemName])) {
-            $_SESSION['inventory'][$itemName]['quantity'] = $newQuantity;
-            echo "<p>Quantity of '$itemName' updated to $newQuantity.</p>";
-        } else {
-            echo "<p>Item '$itemName' not found.</p>";
+        switch ($action) {
+            case 'add':
+                addItem($inventory, $itemName, $quantity, $price);
+                break;
+            case 'update':
+                updateQuantity($inventory, $itemName, $quantity);
+                break;
         }
     }
 }
+
+$totalValue = calculateTotalValue($inventory);
 ?>
 
 <!DOCTYPE html>
@@ -51,47 +73,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <h1>Inventory Management</h1>
 
+    <!-- Form to add a new item -->
     <h2>Add New Item</h2>
-    <form method="post" action="">
+    <form method="post">
         <label for="item_name">Item Name:</label>
-        <input type="text" id="item_name" name="item_name" required>
-        <br>
+        <input type="text" id="item_name" name="item_name" required><br><br>
         <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" required>
-        <br>
+        <input type="number" id="quantity" name="quantity" required><br><br>
         <label for="price">Price:</label>
-        <input type="number" id="price" name="price" step="0.01" required>
-        <br>
-        <input type="submit" name="add" value="Add Item">
+        <input type="number" id="price" name="price" required><br><br>
+        <input type="hidden" name="action" value="add">
+        <input type="submit" value="Add Item">
     </form>
 
+    <!-- Form to update item quantity -->
     <h2>Update Item Quantity</h2>
-    <form method="post" action="">
-        <label for="update_item_name">Item Name:</label>
-        <input type="text" id="update_item_name" name="update_item_name" required>
-        <br>
-        <label for="new_quantity">New Quantity:</label>
-        <input type="number" id="new_quantity" name="new_quantity" required>
-        <br>
-        <input type="submit" name="update" value="Update Quantity">
+    <form method="post">
+        <label for="item_name">Item Name:</label>
+        <input type="text" id="item_name" name="item_name" required><br><br>
+        <label for="quantity">New Quantity:</label>
+        <input type="number" id="quantity" name="quantity" required><br><br>
+        <input type="hidden" name="action" value="update">
+        <input type="submit" value="Update Quantity">
     </form>
 
+    <!-- Display total value of inventory -->
+    <h2>Total Value of Inventory: $<?php echo $totalValue; ?></h2>
+
+    <!-- Display current inventory -->
     <h2>Current Inventory</h2>
-    <table border="1">
-        <tr>
-            <th>Item Name</th>
-            <th>Quantity</th>
-            <th>Price</th>
-        </tr>
-        <?php
-        foreach ($_SESSION['inventory'] as $itemName => $item) {
-            echo "<tr>";
-            echo "<td>" . htmlspecialchars($itemName) . "</td>";
-            echo "<td>" . htmlspecialchars($item['quantity']) . "</td>";
-            echo "<td>" . htmlspecialchars($item['price']) . "</td>";
-            echo "</tr>";
-        }
-        ?>
-    </table>
+    <ul>
+        <?php foreach ($inventory as $item => $details): ?>
+            <li><?php echo $item . ': ' . $details['quantity'] . ' units @ $' . $details['price'] . ' each'; ?></li>
+        <?php endforeach; ?>
+    </ul>
 </body>
 </html>
+
