@@ -9,8 +9,3 @@ $lengths = array_map('strlen', $strings);
 // Print the result
 print_r($lengths);
 ?>
-
-
-
-
-
