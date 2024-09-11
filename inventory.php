@@ -22,7 +22,7 @@ function addItem(&$inventory, $itemName, $quantity, $price) {
     }
 }
 
-// Function to update the quantity of an existing item
+// Function  to update the quantity of an existing item
 function updateQuantity(&$inventory, $itemName, $quantity) {
     if (isset($inventory[$itemName])) {
         $inventory[$itemName]['quantity'] = $quantity;
