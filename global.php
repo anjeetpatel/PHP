@@ -1,0 +1,1 @@
+<!-- write a php script that displays various information about the server and the client using the $SERVER-->
