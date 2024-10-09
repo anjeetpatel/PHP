@@ -10,5 +10,4 @@ if (preg_match($pattern, $string, $matches, PREG_OFFSET_CAPTURE)) {
 } else {
     echo "No match found.";
 }
-
 ?>
