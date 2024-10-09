@@ -1,0 +1,28 @@
+<!--this is some predefined characters in regular expression
+                \d - match any digit
+                \D - match any non-digit
+                \w - match any word character
+                \W - match any non-word character
+                \s - match any whitespace character
+                \S - match any non-whitespace character
+                . - match any character except newline
+                \b - match word boundary
+                \B - match non-word boundary
+                ^ - match start of the string
+                $ - match end of the string
+                [] - match any character in the square brackets
+                [^] - match any character not in the square brackets
+                | - match either or
+                () - group
+                ? - match 0 or 1
+                * - match 0 or more
+                + - match 1 or more
+                {n} - match exactly n
+                {n,} - match n or more
+                {n,m} - match between n and m
+                \ - escape character
+                \t - match tab
+                \n - match newline
+                \r - match return
+                \f - match form feed
+    -->
