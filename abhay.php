@@ -7,7 +7,6 @@
 </head>
 <body>
 <?php
-// Initialize variables to store form data and errors
 $name = $email = $mobile = "";
 $skills = [];
 $emailErr = $mobileErr = "";
@@ -16,15 +15,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $mobile = $_POST['mobile'];
     $skills = isset($_POST['skills']) ? $_POST['skills'] : [];
-    // Email validation
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $emailErr = "Invalid email format.";
     }
-    // Mobile number validation
     if (!preg_match("/^[0-9]{10}$/", $mobile)) {
         $mobileErr = "Mobile number must be 10 digits.";
     }
-    // Display data if no errors
     if (empty($emailErr) && empty($mobileErr)) {
         echo "<h3>Form submitted successfully</h3>";
         echo "Name: $name<br>";
@@ -34,7 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-<!-- HTML Form -->
 <form method="POST" action="">
     <label for="name">Name:</label><br>
     <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($name); ?>" required><br><br>
